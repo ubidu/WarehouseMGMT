@@ -20,19 +20,9 @@ public class CountryRepository : BaseRepository, ICountryRepository
         return await _context.Countries.FindAsync(id); 
     }
 
-    public Task<Country?> GetCountryByNameAsync(string name)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task AddCountryAsync(Country country)
     {
         await _context.Countries.AddAsync(country);
-    }
-    
-    public string GetCountryNameAsync(Warehouse warehouse)
-    {
-        throw new NotImplementedException();
     }
 
     public void Update(Country country)

@@ -19,17 +19,7 @@ public class CountryService : ICountryService
     {
         return await _countryRepository.GetAllCountriesAsync();
     }
-
-    public Task<Country?> GetCountryByIdAsync(Guid id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<Country?> GetCountryByNameAsync(string name)
-    {
-        throw new NotImplementedException();
-    }
-
+    
     public async Task<CountryResponse> AddCountryAsync(Country country)
     {
         try
@@ -89,11 +79,5 @@ public class CountryService : ICountryService
         {
             return new CountryResponse($"An error occurred when deleting the country: {e.Message}");
         }
-    }
-
-    public string GetCountryNameAsync(Warehouse warehouse)
-    {
-        throw new NotImplementedException();
-    }
-    
+    }   
 }
