@@ -10,11 +10,16 @@ namespace WarehouseMGMT.Controllers;
 public class WarehouseController : ApiController
 {
     private readonly IWarehouseService _warehouseService;
+    private readonly ICountryService _countryService;
+    private readonly ICityService _cityService;
     private readonly IMapper _mapper;
     
-    public WarehouseController(IWarehouseService warehouseService, IMapper mapper)
+    public WarehouseController(IWarehouseService warehouseService, ICountryService countryService,
+        ICityService cityService,IMapper mapper)
     {
         _warehouseService = warehouseService;
+        _countryService = countryService;
+        _cityService = cityService;
         _mapper = mapper;
     }
     
@@ -22,7 +27,20 @@ public class WarehouseController : ApiController
     public async Task<IEnumerable<WarehouseResource>> GetAllWarehousesAsync()
     {
         var warehouses = await _warehouseService.GetAllWarehousesAsync();
-        var resources = _mapper.Map<IEnumerable<Warehouse>, IEnumerable<WarehouseResource>>(warehouses);
+        var resources = new List<WarehouseResource>();
+        
+        foreach (var warehouse in warehouses)
+        {
+            var country = await _countryService.GetCountryByIdAsync(warehouse.CountryId);
+            var city = await _cityService.GetCityByIdAsync(warehouse.CityId);
+            var warehouseResource = _mapper.Map<Warehouse, WarehouseResource>(warehouse);
+            warehouseResource.Country = _mapper.Map<Country, CountryResource>(country);
+            warehouseResource.City = _mapper.Map<City, CityResource>(city);
+            warehouseResource.UsedCapacity = await _warehouseService.CalculateUsedSpaceAsync(warehouse.Id);
+            warehouseResource.FreeCapacity = await _warehouseService.CalculateFreeSpaceAsync(warehouse.Id);
+            warehouseResource.IsFull = await _warehouseService.CheckIfWarehouseIsFullAsync(warehouse.Id);
+            resources.Add(warehouseResource);
+        }
         
         
         return resources;
@@ -53,7 +71,7 @@ public class WarehouseController : ApiController
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState.GetErrorMessages());
-        }
+        }   
         
         var warehouse = _mapper.Map<SaveWarehouseResource, Warehouse>(resource);
         var result = await _warehouseService.AddWarehouseAsync(warehouse);

@@ -21,6 +21,11 @@ public class CityService : ICityService
     {
         return await _cityRepository.GetAllCitiesAsync();   
     }
+    
+    public async Task<City> GetCityByIdAsync(Guid id)
+    {
+        return await _cityRepository.GetCityByIdAsync(id);
+    }
 
     public async Task<CityResponse> AddCityAsync(City city)
     {

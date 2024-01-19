@@ -6,6 +6,7 @@ namespace WarehouseMGMT.Services;
 public interface ICountryService
 {
     Task<IEnumerable<Country>> GetAllCountriesAsync();
+    Task<Country> GetCountryByIdAsync(Guid id);
     Task<CountryResponse> AddCountryAsync(Country country);
     Task<CountryResponse> UpdateCountryAsync(Guid id, Country country);
     Task<CountryResponse> DeleteCountryAsync(Guid id);

@@ -20,6 +20,18 @@ public class CountryService : ICountryService
         return await _countryRepository.GetAllCountriesAsync();
     }
     
+    public async Task<Country> GetCountryByIdAsync(Guid id)
+    {
+        var existingCountry = await _countryRepository.GetCountryByIdAsync(id);
+
+        if (existingCountry == null)
+        {
+            throw new Exception("Country not found.");
+        }
+        
+        return existingCountry;
+    }
+    
     public async Task<CountryResponse> AddCountryAsync(Country country)
     {
         try
