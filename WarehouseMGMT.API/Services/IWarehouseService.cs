@@ -10,4 +10,7 @@ public interface IWarehouseService
     Task<WarehouseResponse> AddWarehouseAsync(Warehouse warehouse);
     Task<WarehouseResponse> UpdateWarehouseAsync(Guid id, Warehouse warehouse);
     Task<WarehouseResponse> DeleteWarehouseAsync(Guid id);
+    Task<double> CalculateUsedSpaceAsync(Guid id);
+    Task<double> CalculateFreeSpaceAsync(Guid id);
+    Task<bool> CheckIfWarehouseIsFullAsync(Guid id);
 }

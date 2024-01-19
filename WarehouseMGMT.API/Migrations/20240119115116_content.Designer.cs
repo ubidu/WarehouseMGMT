@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WarehouseMGMT.Persistence;
@@ -11,9 +12,11 @@ using WarehouseMGMT.Persistence;
 namespace WarehouseMGMT.Migrations
 {
     [DbContext(typeof(WarehouseMGMTDbContext))]
-    partial class WarehouseMGMTDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240119115116_content")]
+    partial class content
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -7,11 +7,14 @@ namespace WarehouseMGMT.Services;
 public class CityService : ICityService
 {
     private readonly ICityRepository _cityRepository;
+    private readonly ICountryRepository _countryRepository;
     private readonly IUnitOfWork _unitOfWork;
     
-    public CityService(ICityRepository cityRepository)
+    public CityService(ICityRepository cityRepository, ICountryRepository countryRepository, IUnitOfWork unitOfWork)
     {
         _cityRepository = cityRepository;
+        _countryRepository = countryRepository;
+        _unitOfWork = unitOfWork;
     }
     
     public async Task<IEnumerable<City>> GetAllCitiesAsync()
@@ -21,6 +24,14 @@ public class CityService : ICityService
 
     public async Task<CityResponse> AddCityAsync(City city)
     {
+        var existingCountry = await _countryRepository.GetCountryByIdAsync(city.CountryId);
+            
+        if (existingCountry == null)
+        {
+            return new CityResponse("Country not found.");
+        }
+    
+        
         try
         {
             await _cityRepository.AddCityAsync(city);

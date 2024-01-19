@@ -2,7 +2,6 @@
 
 public class WarehouseResource
 {
-    public CountryResource Country { get; set; }
     public CityResource City { get; set; }
     public string Address { get; set; }
     public double Capacity { get; set; }

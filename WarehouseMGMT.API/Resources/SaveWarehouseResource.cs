@@ -1,9 +1,10 @@
-﻿namespace WarehouseMGMT.Resources;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WarehouseMGMT.Resources;
 
 public class SaveWarehouseResource
 {
-    public Guid CountryId { get; set; }
-    public Guid CityId { get; set; }
-    public string Address { get; set; }
-    public double Capacity { get; set; }
+    [Required] public Guid CityId { get; set; }
+    [Required] [MaxLength(50)] public string Address { get; set; }
+    [Required] public double Capacity { get; set; }
 }

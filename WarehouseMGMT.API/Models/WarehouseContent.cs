@@ -4,8 +4,7 @@ public class WarehouseContent
 {
     public Guid Id { get; private set; }
     public Guid ItemId { get; set; }
-    public double Quantity { get; set; }
-    public double TotalWeight => Item.Weight * Quantity;
+    public int Quantity { get; set; }
     
     public Guid WarehouseId { get; set; }
 

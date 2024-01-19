@@ -2,11 +2,11 @@
 
 namespace WarehouseMGMT.Domain.Services.Communication;
 
-public class WarehouseResponse
+public class WarehouseResponse : BaseResponse
 {
     public Warehouse Warehouse { get; set; }
     
-    private WarehouseResponse(bool success, string message, Warehouse warehouse)
+    private WarehouseResponse(bool success, string message, Warehouse warehouse) : base(success, message)
     {
         Warehouse = warehouse;
     }

@@ -10,5 +10,8 @@ public class ModelToResourceProfile : Profile
     {
         CreateMap<City, CityResource>();
         CreateMap<Country, CountryResource>();
+        CreateMap<Item, ItemResource>();
+        CreateMap<Warehouse, WarehouseResource>();
+        CreateMap<WarehouseContent, WarehouseContentResource>();
     }
 }
