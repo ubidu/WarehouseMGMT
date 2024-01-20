@@ -11,4 +11,12 @@ public class Warehouse
     public virtual ICollection<WarehouseContent> WarehouseContents { get; private set; } = null!;
     public virtual Country Country { get; private set; } = null!;
     public virtual City City { get; private set; } = null!;
+
+    public Warehouse()
+    { }
+    
+    public Warehouse(Guid id)
+    {
+        Id = id;
+    }
 }

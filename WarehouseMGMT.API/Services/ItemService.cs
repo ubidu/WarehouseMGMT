@@ -27,6 +27,13 @@ public class ItemService : IItemService
 
     public async Task<ItemResponse> SaveAsync(Item item)
     {
+        var weight = item.Weight;
+        
+        if (weight <= 0)
+        {
+            return new ItemResponse("Item weight must be greater than 0.");
+        }
+        
         try
         {
             await _itemRepository.Add(item);
@@ -43,10 +50,17 @@ public class ItemService : IItemService
     public async Task<ItemResponse> UpdateAsync(Guid id, Item item)
     {
         var existingItem = await _itemRepository.FindByIdAsync(id);
-        
+
         if (existingItem == null)
         {
             return new ItemResponse("Item not found.");
+        }
+        
+        var weight = item.Weight;
+        
+        if (weight <= 0)
+        {
+            return new ItemResponse("Item weight must be greater than 0.");
         }
         
         existingItem.Name = item.Name;
