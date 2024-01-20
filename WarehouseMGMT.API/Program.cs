@@ -19,6 +19,12 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<ICityService, CityService>();
     builder.Services.AddScoped<ICountryRepository, CountryRepository>();
     builder.Services.AddScoped<ICountryService, CountryService>();
+    builder.Services.AddScoped<IItemRepository, ItemRepository>();
+    builder.Services.AddScoped<IItemService, ItemService>();
+    builder.Services.AddScoped<IWarehouseRepository, WarehouseRepository>();
+    builder.Services.AddScoped<IWarehouseService, WarehouseService>();
+    builder.Services.AddScoped<IWarehouseContentRepository, WarehouseContentRepository>();
+    builder.Services.AddScoped<IWarehouseContentService, WarehouseContentService>();
 }
 
 

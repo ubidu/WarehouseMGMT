@@ -19,17 +19,19 @@ public class CountryService : ICountryService
     {
         return await _countryRepository.GetAllCountriesAsync();
     }
-
-    public Task<Country?> GetCountryByIdAsync(Guid id)
+    
+    public async Task<Country> GetCountryByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
-    }
+        var existingCountry = await _countryRepository.GetCountryByIdAsync(id);
 
-    public Task<Country?> GetCountryByNameAsync(string name)
-    {
-        throw new NotImplementedException();
+        if (existingCountry == null)
+        {
+            throw new Exception("Country not found.");
+        }
+        
+        return existingCountry;
     }
-
+    
     public async Task<CountryResponse> AddCountryAsync(Country country)
     {
         try
@@ -89,11 +91,5 @@ public class CountryService : ICountryService
         {
             return new CountryResponse($"An error occurred when deleting the country: {e.Message}");
         }
-    }
-
-    public string GetCountryNameAsync(Warehouse warehouse)
-    {
-        throw new NotImplementedException();
-    }
-    
+    }   
 }

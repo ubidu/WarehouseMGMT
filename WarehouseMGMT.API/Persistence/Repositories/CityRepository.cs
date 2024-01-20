@@ -16,48 +16,23 @@ public class CityRepository : BaseRepository, ICityRepository
         return await _context.Cities.ToListAsync();
     }
 
-    public Task<IEnumerable<City>> GetCitiesByCountryIdAsync(Guid countryId)
+    public async Task<City?> GetCityByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        return await _context.Cities.FindAsync(id);
     }
 
-    public Task<City?> GetCityByIdAsync(Guid id)
+    public async Task AddCityAsync(City city)
     {
-        throw new NotImplementedException();
+        await _context.Cities.AddAsync(city);
     }
 
-    public Task<City?> GetCityByNameAsync(string name)
+    public void Update(City city)
     {
-        throw new NotImplementedException();
+        _context.Cities.Update(city);
     }
 
-    public Task<City?> AddCityAsync(City city)
+    public void Remove(City city)
     {
-        throw new NotImplementedException();
-    }
-
-    public Task<City?> UpdateCityAsync(City city)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<City?> DeleteCityAsync(Guid id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<City?> DeleteCityAsync(City city)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<City?> DeleteCityAsync(string name)
-    {
-        throw new NotImplementedException();
-    }
-
-    public string GetCityNameAsync(Warehouse warehouse)
-    {
-        throw new NotImplementedException();
+        _context.Cities.Remove(city);
     }
 }

@@ -1,17 +1,13 @@
-﻿using WarehouseMGMT.Models;
+﻿using WarehouseMGMT.Domain.Services.Communication;
+using WarehouseMGMT.Models;
 
 namespace WarehouseMGMT.Services;
 
 public interface ICityService
 {
     Task<IEnumerable<City>> GetAllCitiesAsync();
-    Task<IEnumerable<City>> GetCitiesByCountryIdAsync(Guid countryId);
-    Task<City?> GetCityByIdAsync(Guid id);
-    Task<City?> GetCityByNameAsync(string name);
-    Task<City?> AddCityAsync(City city);
-    Task<City?> UpdateCityAsync(City city);
-    Task<City?> DeleteCityAsync(Guid id);
-    Task<City?> DeleteCityAsync(City city);
-    Task<City?> DeleteCityAsync(string name);
-    string GetCityNameAsync(Warehouse warehouse);
+    Task<City> GetCityByIdAsync(Guid id);
+    Task<CityResponse> AddCityAsync(City city);
+    Task<CityResponse> UpdateCityAsync(Guid id, City city);
+    Task<CityResponse> DeleteCityAsync(Guid id);
 }
