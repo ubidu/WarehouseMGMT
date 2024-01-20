@@ -7,11 +7,16 @@ namespace WarehouseMGMT.Services;
 public class WarehouseContentService : IWarehouseContentService
 {
     private readonly IWarehouseContentRepository _warehouseContentRepository;
+    private readonly IWarehouseService _warehouseService;
+    private readonly IItemRepository _itemRepository;
     private readonly IUnitOfWork _unitOfWork;
     
-    public WarehouseContentService(IWarehouseContentRepository warehouseContentRepository, IUnitOfWork unitOfWork)
+    public WarehouseContentService(IWarehouseContentRepository warehouseContentRepository, IWarehouseService warehouseService,
+        IItemRepository itemRepository, IUnitOfWork unitOfWork)
     {
         _warehouseContentRepository = warehouseContentRepository;
+        _warehouseService = warehouseService;
+        _itemRepository = itemRepository;
         _unitOfWork = unitOfWork;
     }
     
@@ -34,6 +39,18 @@ public class WarehouseContentService : IWarehouseContentService
     
     public async Task<WarehouseContentResponse> AddWarehouseContentAsync(WarehouseContent warehouseContent)
     {
+        
+        // cant use CalculateTotalItemWeightAsync because warehouseContent.Id is still null
+        var item = await _itemRepository.FindByIdAsync(warehouseContent.ItemId);
+        warehouseContent.Item = item;
+        var totalItemWeight = warehouseContent.Item.Weight * warehouseContent.Quantity;
+        var freeSpace = await _warehouseService.CalculateFreeSpaceAsync(warehouseContent.WarehouseId);
+        
+        if(totalItemWeight > freeSpace)
+        {
+            return new WarehouseContentResponse("Not enough space in the warehouse.");
+        }
+        
         try
         {
             await _warehouseContentRepository.AddWarehouseContentAsync(warehouseContent);
@@ -95,7 +112,7 @@ public class WarehouseContentService : IWarehouseContentService
         }
     }
 
-    public async Task<double> CalculateTotalWeightAsync(Guid id)
+    public async Task<double> CalculateTotalItemWeightAsync(Guid id)
     {
         var warehouseContent = await _warehouseContentRepository.GetWarehouseContentByIdAsync(id);
 

@@ -6,6 +6,7 @@ namespace WarehouseMGMT.Services;
 public interface IItemService
 {
     Task<IEnumerable<Item>> ListAsync();
+    Task<Item?> GetItemByIdAsync(Guid id);
     Task<ItemResponse> SaveAsync(Item item);
     Task<ItemResponse> UpdateAsync(Guid id, Item item);
     Task<ItemResponse> DeleteAsync(Guid id);

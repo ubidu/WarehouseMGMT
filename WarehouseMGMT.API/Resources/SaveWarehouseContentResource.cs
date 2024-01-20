@@ -8,7 +8,7 @@ public class SaveWarehouseContentResource
     public Guid WarehouseId { get; set; }
     
     [Required]
-    public Guid ProductId { get; set; }
+    public Guid ItemId { get; set; }
     
     [Required]
     public int Quantity { get; set; }

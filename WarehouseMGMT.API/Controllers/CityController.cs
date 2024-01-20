@@ -75,6 +75,8 @@ public class CityController : ApiController
         }
         
         var cityResource = _mapper.Map<City, CityResource>(result.City);
+        var country = await _countryService.GetCountryByIdAsync(city.CountryId);
+        cityResource.Country = _mapper.Map<Country, CountryResource>(country);
         
         return Ok(cityResource);
     }

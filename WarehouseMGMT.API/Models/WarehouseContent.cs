@@ -9,5 +9,5 @@ public class WarehouseContent
     public Guid WarehouseId { get; set; }
 
     public virtual Warehouse Warehouse { get; private set; }
-    public virtual Item Item { get; private set; }
+    public virtual Item Item { get; set; } // idk if its safe to left set public but its needed for calculation
 }

@@ -60,6 +60,7 @@ public class CityService : ICityService
         }
         
         existingCity.Name = city.Name;
+        existingCity.CountryId = city.CountryId;
         
         try
         {

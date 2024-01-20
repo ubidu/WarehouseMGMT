@@ -9,4 +9,5 @@ public interface IWarehouseRepository
     Task AddWarehouseAsync(Warehouse warehouse);
     void Update(Warehouse warehouse);
     void Remove(Warehouse warehouse);
+    Task<IEnumerable<WarehouseContent>> GetAllWarehouseContentsAsync(Guid id);
 }

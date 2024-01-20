@@ -10,5 +10,5 @@ public interface IWarehouseContentService
     Task<WarehouseContentResponse> AddWarehouseContentAsync(WarehouseContent warehouseContent);
     Task<WarehouseContentResponse> UpdateWarehouseContentAsync(Guid id, WarehouseContent warehouseContent);
     Task<WarehouseContentResponse> DeleteWarehouseContentAsync(Guid id);
-    Task<double> CalculateTotalWeightAsync(Guid id);
+    Task<double> CalculateTotalItemWeightAsync(Guid id);
 }

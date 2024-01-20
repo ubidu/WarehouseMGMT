@@ -8,12 +8,15 @@ public class WarehouseService : IWarehouseService
 {
     private readonly IWarehouseRepository _warehouseRepository;
     private readonly IWarehouseContentRepository _warehouseContentRepository;
+    private readonly IItemRepository _itemRepository;
     private readonly IUnitOfWork _unitOfWork;
     
-    public WarehouseService(IWarehouseRepository warehouseRepository, IWarehouseContentRepository warehouseContentRepository,IUnitOfWork unitOfWork)
+    public WarehouseService(IWarehouseRepository warehouseRepository, IWarehouseContentRepository warehouseContentRepository, IItemRepository itemRepository,
+        IUnitOfWork unitOfWork)
     {
         _warehouseRepository = warehouseRepository;
         _warehouseContentRepository = warehouseContentRepository;
+        _itemRepository = itemRepository;
         _unitOfWork = unitOfWork;
     }
     
@@ -100,6 +103,16 @@ public class WarehouseService : IWarehouseService
 
     public async Task<double> CalculateUsedSpaceAsync(Guid id)
     {
+        if (id == Guid.Empty)
+        {
+            throw new Exception("Warehouse id is empty.");
+        }
+        
+        if (id == null)
+        {
+            throw new Exception("Warehouse id is null.");
+        }
+        
         var warehouse = await _warehouseRepository.GetWarehouseByIdAsync(id);
         
         if (warehouse == null)
@@ -118,6 +131,7 @@ public class WarehouseService : IWarehouseService
         
         foreach (var warehouseContent in warehouseContents)
         {
+            warehouseContent.Item = await _itemRepository.FindByIdAsync(warehouseContent.ItemId);
             totalWeight += warehouseContent.Quantity * warehouseContent.Item.Weight;
         }
         
@@ -150,5 +164,24 @@ public class WarehouseService : IWarehouseService
         var freeSpace = await CalculateFreeSpaceAsync(id);
         
         return freeSpace == 0;
+    }
+    
+    public async Task<IEnumerable<WarehouseContent>> GetWarehouseContentAsync(Guid id)
+    {
+        var warehouse = await _warehouseRepository.GetWarehouseByIdAsync(id);
+        
+        if (warehouse == null)
+        {
+            throw new Exception("Warehouse not found.");
+        }
+        
+        var warehouseContents = await _warehouseContentRepository.GetAllWarehouseContentsAsync();
+        
+        if (warehouseContents == null)
+        {
+            throw new Exception("Warehouse content not found.");
+        }
+        
+        return warehouseContents;
     }
 }

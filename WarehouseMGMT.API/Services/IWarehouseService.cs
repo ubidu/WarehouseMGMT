@@ -13,4 +13,5 @@ public interface IWarehouseService
     Task<double> CalculateUsedSpaceAsync(Guid id);
     Task<double> CalculateFreeSpaceAsync(Guid id);
     Task<bool> CheckIfWarehouseIsFullAsync(Guid id);
+    Task<IEnumerable<WarehouseContent>> GetWarehouseContentAsync(Guid id);
 }

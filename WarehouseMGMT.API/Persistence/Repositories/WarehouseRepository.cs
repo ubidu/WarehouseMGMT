@@ -34,4 +34,9 @@ public class WarehouseRepository : BaseRepository, IWarehouseRepository
     {
         _context.Warehouses.Remove(warehouse);
     }
+    
+    public async Task<IEnumerable<WarehouseContent>> GetAllWarehouseContentsAsync(Guid id)
+    {
+        return await _context.WarehouseContents.Where(x => x.WarehouseId == id).ToListAsync();
+    }
 }

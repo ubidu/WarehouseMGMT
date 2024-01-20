@@ -12,14 +12,18 @@ public class WarehouseController : ApiController
     private readonly IWarehouseService _warehouseService;
     private readonly ICountryService _countryService;
     private readonly ICityService _cityService;
+    private readonly IItemService _itemService;
+    private readonly IWarehouseContentService _warehouseContentService;
     private readonly IMapper _mapper;
     
     public WarehouseController(IWarehouseService warehouseService, ICountryService countryService,
-        ICityService cityService,IMapper mapper)
+        ICityService cityService, IItemService itemService, IWarehouseContentService warehouseContentService,  IMapper mapper)
     {
         _warehouseService = warehouseService;
         _countryService = countryService;
         _cityService = cityService;
+        _itemService = itemService;
+        _warehouseContentService = warehouseContentService;
         _mapper = mapper;
     }
     
@@ -58,6 +62,10 @@ public class WarehouseController : ApiController
 
         var warehouseResource = _mapper.Map<Warehouse, WarehouseResource>(result.Warehouse);
 
+        var country = await _countryService.GetCountryByIdAsync(result.Warehouse.CountryId);
+        var city = await _cityService.GetCityByIdAsync(result.Warehouse.CityId);
+        warehouseResource.Country = _mapper.Map<Country, CountryResource>(country);
+        warehouseResource.City = _mapper.Map<City, CityResource>(city);
         warehouseResource.UsedCapacity = await _warehouseService.CalculateUsedSpaceAsync(id);
         warehouseResource.FreeCapacity = await _warehouseService.CalculateFreeSpaceAsync(id);
         warehouseResource.IsFull = await _warehouseService.CheckIfWarehouseIsFullAsync(id);
@@ -120,5 +128,24 @@ public class WarehouseController : ApiController
         var warehouseResource = _mapper.Map<Warehouse, WarehouseResource>(result.Warehouse);
         
         return Ok(warehouseResource);
+    }
+    
+    [HttpGet("{id}/content")]
+    public async Task<IEnumerable<WarehouseContentResource>> GetWarehouseContentAsync(Guid id)
+    {
+        var warehouseContents = await _warehouseService.GetWarehouseContentAsync(id);
+        var resources = new List<WarehouseContentResource>();
+        
+        foreach (var warehouseContent in warehouseContents)
+        {
+            var warehouseContentResource = _mapper.Map<WarehouseContent, WarehouseContentResource>(warehouseContent);
+            var item = await _itemService.GetItemByIdAsync(warehouseContent.ItemId);
+            warehouseContentResource.Item = _mapper.Map<Item, ItemResource>(item);
+            warehouseContentResource.TotalWeight =
+                await _warehouseContentService.CalculateTotalItemWeightAsync(warehouseContent.Id);
+            resources.Add(warehouseContentResource);
+        }
+        
+        return resources;
     }
 }

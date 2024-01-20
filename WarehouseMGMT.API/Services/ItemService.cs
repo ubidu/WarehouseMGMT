@@ -19,6 +19,11 @@ public class ItemService : IItemService
     {
         return await _itemRepository.ListAsync();
     }
+    
+    public async Task<Item> GetItemByIdAsync(Guid id)
+    {
+        return await _itemRepository.FindByIdAsync(id);
+    }
 
     public async Task<ItemResponse> SaveAsync(Item item)
     {
