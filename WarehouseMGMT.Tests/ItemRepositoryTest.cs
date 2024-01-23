@@ -15,7 +15,7 @@ public class ItemRepositoryTest
     {
         var options = new DbContextOptionsBuilder<WarehouseMGMTDbContext>();
         options.UseNpgsql(
-            "Host=localhost; Database=WarehouseManagement; Username=postgres; Password=postgres; Include Error Detail=true");
+            "Host=localhost; Database=WarehouseManagement; Username=postgres; Password=admin; Include Error Detail=true");
         _context = new WarehouseMGMTDbContext(options.Options);
         _itemRepository = new ItemRepository(_context);
     }

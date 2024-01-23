@@ -39,6 +39,10 @@ public class WarehouseContentService : IWarehouseContentService
     
     public async Task<WarehouseContentResponse> AddWarehouseContentAsync(WarehouseContent warehouseContent)
     {
+        if (warehouseContent.Quantity <= 0)
+        {
+            return new WarehouseContentResponse("Quantity must be greater than 0.");
+        }
         
         // cant use CalculateTotalItemWeightAsync because warehouseContent.Id is still null
         var item = await _itemRepository.FindByIdAsync(warehouseContent.ItemId);

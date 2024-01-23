@@ -8,14 +8,18 @@ public class WarehouseService : IWarehouseService
 {
     private readonly IWarehouseRepository _warehouseRepository;
     private readonly IWarehouseContentRepository _warehouseContentRepository;
+    private readonly ICountryRepository _countryRepository;
+    private readonly ICityRepository _cityRepository;
     private readonly IItemRepository _itemRepository;
     private readonly IUnitOfWork _unitOfWork;
     
     public WarehouseService(IWarehouseRepository warehouseRepository, IWarehouseContentRepository warehouseContentRepository, IItemRepository itemRepository,
-        IUnitOfWork unitOfWork)
+        ICountryRepository countryRepository, ICityRepository cityRepository ,IUnitOfWork unitOfWork)
     {
         _warehouseRepository = warehouseRepository;
         _warehouseContentRepository = warehouseContentRepository;
+        _countryRepository = countryRepository;
+        _cityRepository = cityRepository;
         _itemRepository = itemRepository;
         _unitOfWork = unitOfWork;
     }
@@ -39,6 +43,22 @@ public class WarehouseService : IWarehouseService
 
     public async Task<WarehouseResponse> AddWarehouseAsync(Warehouse warehouse)
     {
+        var city = await _cityRepository.GetCityByIdAsync(warehouse.CityId);
+        
+        if (city == null)
+        {
+            return new WarehouseResponse("City not found.");
+        }
+        
+        var country = await _countryRepository.GetCountryByIdAsync(city.CountryId);
+        
+        warehouse.CountryId = country.Id;
+        
+        if(warehouse.Capacity <= 0)
+        {
+            return new WarehouseResponse("Warehouse capacity must be greater than 0.");
+        }
+        
         try
         {
             await _warehouseRepository.AddWarehouseAsync(warehouse);
@@ -61,7 +81,21 @@ public class WarehouseService : IWarehouseService
             return new WarehouseResponse("Warehouse not found.");
         }
         
-        existingWarehouse.CountryId = warehouse.CountryId;
+        var city = await _cityRepository.GetCityByIdAsync(warehouse.CityId);
+        
+        if (city == null)
+        {
+            return new WarehouseResponse("City not found.");
+        }
+        
+        var country = await _countryRepository.GetCountryByIdAsync(city.CountryId);
+        
+        if(warehouse.Capacity <= 0)
+        {
+            return new WarehouseResponse("Warehouse capacity must be greater than 0.");
+        }
+        
+        existingWarehouse.CountryId = country.Id;
         existingWarehouse.CityId = warehouse.CityId;
         existingWarehouse.Address = warehouse.Address;
         existingWarehouse.Capacity = warehouse.Capacity;

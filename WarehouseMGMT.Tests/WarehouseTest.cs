@@ -11,6 +11,8 @@ public class WarehouseTest
     private readonly Mock<IWarehouseRepository> _warehouseRepositoryMock;
     private readonly Mock<IWarehouseContentRepository> _warehouseContentRepositoryMock;
     private readonly Mock<IItemRepository> _itemRepositoryMock;
+    private readonly Mock<ICountryRepository> _countryRepositoryMock;
+    private readonly Mock<ICityRepository> _cityRepositoryMock;
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
     
     public WarehouseTest()
@@ -18,8 +20,12 @@ public class WarehouseTest
         _warehouseRepositoryMock = new Mock<IWarehouseRepository>();
         _warehouseContentRepositoryMock = new Mock<IWarehouseContentRepository>();
         _itemRepositoryMock = new Mock<IItemRepository>();
+        _countryRepositoryMock = new Mock<ICountryRepository>();
+        _cityRepositoryMock = new Mock<ICityRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
-        _warehouseService = new WarehouseService(_warehouseRepositoryMock.Object, _warehouseContentRepositoryMock.Object, _itemRepositoryMock.Object, _unitOfWorkMock.Object);
+        _warehouseService = new WarehouseService(_warehouseRepositoryMock.Object, 
+            _warehouseContentRepositoryMock.Object, _itemRepositoryMock.Object,
+            _countryRepositoryMock.Object, _cityRepositoryMock.Object, _unitOfWorkMock.Object);
     }
     
     [Fact]
